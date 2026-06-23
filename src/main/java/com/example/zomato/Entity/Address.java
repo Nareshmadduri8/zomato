@@ -1,9 +1,11 @@
 package com.example.zomato.Entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Address {
@@ -19,12 +21,19 @@ public class Address {
 	private String landmark;
 	private int floorno;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Coordinates coordinates;
+	
+	
 	public Address() {
 		super();
 	}
 
-	public Address( String street, String city, int pincode, String state, String country, String landmark,
-			int floorno) {
+
+	public Address(int id, String street, String city, int pincode, String state, String country, String landmark,
+			int floorno, Coordinates coordinates) {
+		super();
+		this.id = id;
 		this.street = street;
 		this.city = city;
 		this.pincode = pincode;
@@ -32,7 +41,12 @@ public class Address {
 		this.country = country;
 		this.landmark = landmark;
 		this.floorno = floorno;
+		this.coordinates = coordinates;
 	}
+
+
+
+
 
 	public int getId() {
 		return id;
@@ -97,6 +111,17 @@ public class Address {
 	public void setFloorno(int floorno) {
 		this.floorno = floorno;
 	}
+
+	public Coordinates getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
+	}
+
+	
+	
 
 	
 }

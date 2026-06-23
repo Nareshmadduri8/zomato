@@ -24,9 +24,10 @@ public class RestaurantController {
 	
 	
 	@PostMapping("/rest/createrestaurant")
-	public void saverestaurantdto(@RequestBody RestaurantDto rdto) {
-		restaurantService.saverestaurant(rdto);
+	public ResponseStructure<Restaurant> saverestaurantdto(@RequestBody RestaurantDto rdto) {
+		return restaurantService.saverestaurant(rdto);
 	}
+	
 	
 	@GetMapping("/rest/findrestaurant")
 	public ResponseStructure<Restaurant> findrestaurant(@RequestParam int id) {
@@ -37,6 +38,7 @@ public class RestaurantController {
 	public ResponseStructure<Restaurant> deleterestaurant(@RequestParam int id) {
 		return restaurantService.deleterestaurant(id);
 	}
+	
 	
 	
 	

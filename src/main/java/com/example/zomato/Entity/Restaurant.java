@@ -2,6 +2,8 @@ package com.example.zomato.Entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,20 +19,22 @@ public class Restaurant {
 	private int id;
 	private String name;
 	private String type;
+	@Column(unique = true)
 	private long mobno;
+	@Column(unique = true)
 	private String gmail;
 	private double packagingfees;
 	private String availability;
-	
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
-	
+
 	@OneToMany
 	private List<Item> menu;
-	
+
 	@OneToMany
 	private List<Rating> ratings;
-	
+
 	@OneToMany
 	private List<Order> orders;
 
@@ -38,8 +42,8 @@ public class Restaurant {
 		super();
 	}
 
-	public Restaurant(String name, String type, long mobno, String gmail, double packagingfees,
-			String availability, Address address, List<Item> menu, List<Rating> ratings, List<Order> orders) {
+	public Restaurant(String name, String type, long mobno, String gmail, double packagingfees, String availability,
+			Address address, List<Item> menu, List<Rating> ratings, List<Order> orders) {
 		this.name = name;
 		this.type = type;
 		this.mobno = mobno;
@@ -139,8 +143,5 @@ public class Restaurant {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
-	
-	
-	
-	
+
 }

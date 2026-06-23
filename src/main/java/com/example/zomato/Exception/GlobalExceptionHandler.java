@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 		ResponseStructure<String>rs=new ResponseStructure<String>();
 		rs.setStatuscode(HttpStatus.ALREADY_REPORTED.value());
 		rs.setMessage("CUSTOMER ALEARDY EXISTS");
-		rs.setData("CUSTOMER ALEARDY PRESENT INT THE DATABASE");
+		rs.setData("CUSTOMER ALEARDY PRESENT IN THE DATABASE");
 		return rs;
 		}
 	

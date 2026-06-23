@@ -1,5 +1,7 @@
 package com.example.zomato.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,8 @@ import com.example.zomato.DTO.CustomerDto;
 import com.example.zomato.DTO.ResponseStructure;
 import com.example.zomato.Entity.Coordinates;
 import com.example.zomato.Entity.Customer;
+import com.example.zomato.Entity.Item;
+import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Service.Addressservice;
 import com.example.zomato.Service.CustomerService;
 
@@ -26,8 +30,8 @@ public class Customercontroller {
 	private Addressservice addressservice;
 	
 	@PostMapping("/customer/createaccount")
-	public void savecustomerdto(@RequestBody CustomerDto cdto) {
-		customerservice.createaccount(cdto);
+	public ResponseStructure<Customer> savecustomerdto(@RequestBody CustomerDto cdto) {
+		return customerservice.createaccount(cdto);
 	}
 	
 	@GetMapping("/customer/findcustomer")
@@ -46,4 +50,15 @@ public class Customercontroller {
 	public void createnewaddress(@RequestBody Coordinates coordinates,@PathVariable int id) {
 		addressservice.createnewaddress(coordinates,id);
 	}
+	
+//	@GetMapping("/customer/search/itemandrestaurant/{cid}/{restname}")
+//	public ResponseStructure<List<Restaurant>> findItemAndRestaurant(@PathVariable int cid,@PathVariable String restname) {
+//		return customerservice.findItemAndRestaurant(cid,restname);
+//	}
+//	
+	@GetMapping("/cust/search/itemsandrestaurant/{cid}/{name}")
+	public ResponseStructure<List<Restaurant>> findByItemNameAndRestAddCity(@PathVariable int cid, @PathVariable String name) {
+		return customerservice.findByItemNameAndRestAddCity(cid,name);
+	}
 }
+
