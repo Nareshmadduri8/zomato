@@ -37,6 +37,7 @@ public class ItemService {
 		i.setCategory(itemDto.getCategory());
 		i.setAvailability(itemDto.getAvailability());
 		r.getMenu().add(i);
+		i.setRestaurant(r);
 		itemRepository.save(i);
 		rs.setStatuscode(HttpStatus.ACCEPTED.value());
 		rs.setMessage("RESTAURANT ITEMS SAVED");

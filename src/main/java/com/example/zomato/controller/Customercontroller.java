@@ -60,5 +60,16 @@ public class Customercontroller {
 	public ResponseStructure<List<Restaurant>> findByItemNameAndRestAddCity(@PathVariable int cid, @PathVariable String name) {
 		return customerservice.findByItemNameAndRestAddCity(cid,name);
 	}
+	
+	@PostMapping("/customer/additemtocart/{cid}/{itemid}")
+	public ResponseStructure<Item> additemtocart(@PathVariable int cid, @PathVariable int itemid) {
+		return customerservice.additemtocart(cid,itemid);
+	}
+	
+	@PostMapping("/customer/getcart/{cid}")
+	public void placetheorders(@PathVariable int cid) {
+		customerservice.placetheorder(cid);
+	}
+	
 }
 

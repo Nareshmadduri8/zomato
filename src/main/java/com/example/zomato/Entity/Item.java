@@ -1,9 +1,12 @@
 package com.example.zomato.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Item {
@@ -19,22 +22,30 @@ public class Item {
 	private String category;
 	private String availability;
 	
-	
+	@JsonIgnore
+	@ManyToOne
+	private Restaurant restaurant; 
+
 	
 	public Item() {
 		super();
 	}
 
-	public Item(String name, String type, double price, int quantity, String description, String category,
-			String availability) {
-		this.name = name;
-		this.type = type;
-		this.price = price;
-		this.quantity = quantity;
-		this.description = description;
-		this.category = category;
-		this.availability = availability;
-	}
+	public Item(int id, String name, String type, double price, int quantity, String description, String category,
+		String availability, Restaurant restaurant) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.type = type;
+	this.price = price;
+	this.quantity = quantity;
+	this.description = description;
+	this.category = category;
+	this.availability = availability;
+	this.restaurant = restaurant;
+}
+
+
 
 	public int getId() {
 		return id;
@@ -98,6 +109,18 @@ public class Item {
 
 	public void setAvailability(String availability) {
 		this.availability = availability;
+	}
+
+
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 	
 	

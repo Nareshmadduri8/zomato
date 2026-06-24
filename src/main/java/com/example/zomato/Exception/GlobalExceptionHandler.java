@@ -59,4 +59,83 @@ public class GlobalExceptionHandler {
 					
 				}
 
+//				Item not found Exception
+				@ExceptionHandler(ItemNotFoundException.class)
+				public ResponseStructure<String> ItemNotFoundExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Item not found Exception !");
+					rs.setData( null);
+					return rs;
+				}
+				
+				
+//				ItemNotAvailableException
+				@ExceptionHandler(ItemNotAvailableException.class)
+				public ResponseStructure<String> ItemNotAvailableExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Item Not Available !");
+					rs.setData( null);
+					return rs;
+				}
+				
+//				RestaurantNotAvailabilityforItemException
+				@ExceptionHandler(RestaurantNotAvailabilityforItemException.class)
+				public ResponseStructure<String> RestaurantNotAvailabilityforItemExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Restaurant Not Availability for Item!");
+					rs.setData( null);
+					return rs;
+				}
+				
+//				Cart is empty exception
+				@ExceptionHandler(CartIsEmptyException.class)
+				public ResponseStructure<String> CartisEmptyExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Add items to cart!");
+					rs.setData( null);
+					return rs;
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

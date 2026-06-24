@@ -10,6 +10,7 @@ public class ItemDto {
 	private String category;
 	private String availability;
 	
+	
 	public ItemDto() {
 		super();
 	}

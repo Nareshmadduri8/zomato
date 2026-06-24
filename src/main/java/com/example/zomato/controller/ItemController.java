@@ -19,7 +19,7 @@ public class ItemController {
 	
 	
 	@PostMapping("/save/itemdto/{id}")
-	public ResponseStructure<Restaurant> saveitemdto(@PathVariable int id,@RequestBody ItemDto itemDto ) {
+	public ResponseStructure<Restaurant> saveitemdto(@PathVariable int id,@RequestBody ItemDto itemDto) {
 		return itemService.saveitem(id,itemDto);
 	}
 	

@@ -13,9 +13,14 @@ import com.example.zomato.Entity.Address;
 import com.example.zomato.Entity.Customer;
 import com.example.zomato.Entity.Item;
 import com.example.zomato.Entity.Restaurant;
+import com.example.zomato.Exception.CartIsEmptyException;
 import com.example.zomato.Exception.CustomerNotFoundException;
+import com.example.zomato.Exception.ItemNotAvailableException;
+import com.example.zomato.Exception.ItemNotFoundException;
+import com.example.zomato.Exception.RestaurantNotAvailabilityforItemException;
 import com.example.zomato.Exception.RestaurantNotFoundException;
 import com.example.zomato.Repository.CustomerRepository;
+import com.example.zomato.Repository.ItemRepository;
 import com.example.zomato.Repository.RestaurantRepository;
 
 @Service
@@ -25,6 +30,8 @@ public class CustomerService {
 	private CustomerRepository customerRepo;
 	@Autowired
 	private RestaurantRepository restaurantRepo;
+	@Autowired
+	private ItemRepository itemRepository;
 
 	public ResponseStructure<Customer> createaccount(CustomerDto cdto) {
 		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
@@ -117,14 +124,10 @@ public class CustomerService {
 			List<Restaurant> result = restaurants.stream()
 	                .filter(restaurant ->
 	                        (restaurant.getName() != null
-	                                && restaurant.getName().toLowerCase()
-	                                        .contains(name.toLowerCase()))
+	                                && restaurant.getName().toLowerCase().contains(name.toLowerCase()))
 	                                ||
-	                        (restaurant.getMenu() != null
-	                                && restaurant.getMenu().stream()
-	                                        .anyMatch(item ->
-	                                                item.getName() != null
-	                                                        && item.getName().toLowerCase()
+	                        (restaurant.getMenu() != null && restaurant.getMenu().stream()
+	                            .anyMatch(item ->  item.getName() != null && item.getName().toLowerCase()
 	                                                                .contains(name.toLowerCase()))
 	                ))
 	                .toList();
@@ -144,6 +147,102 @@ public class CustomerService {
 			}
 			return rs;
 		}
+
+//		Add items to cart 
+	public ResponseStructure<Item> additemtocart(int cid, int itemid) {
+		ResponseStructure<Item> rs=new ResponseStructure<Item>();
+		Customer cust=customerRepo.findById(cid).orElseThrow(()-> new CustomerNotFoundException());
+		Item item=itemRepository.findById(itemid).orElseThrow(()-> new ItemNotFoundException());
+		System.out.println(item.getRestaurant());
+	if(!"Available".equals(item.getAvailability())) {
+			throw new ItemNotAvailableException();
+		}
+		if(cust.getCart().isEmpty()) {
+			cust.getCart().add(item);
+		} else {
+			if(item.getRestaurant().getId()==cust.getCart().get(0).getRestaurant().getId()) {
+				cust.getCart().add(item);
+			} else {
+				throw new  RestaurantNotAvailabilityforItemException();
+			}
+		}
+		customerRepo.save(cust);
+		rs.setStatuscode(HttpStatus.ACCEPTED.value());
+		rs.setMessage("Add to cart item successfully");
+		rs.setData(item);
+		return rs;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	public void placetheorder(int cid) {
+//		Customer cust=customerRepo.findById(cid).orElseThrow(()-> new CustomerNotFoundException());
+//		List<Item> custlist=cust.getCart();
+//		if(custlist.isEmpty()) {
+//		throw new CartIsEmptyException();
+//		}
+//		custlist.get(0).getRestaurant().getAddress().getCity();
+//		cust.getAddress().get(0).getCity();
+//		System.out.println(custlist);
+//		System.out.println(cust);
+//	}
+	
+	
+	
+			public void placetheorder(int cid) {
+		
+		
+			}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	}
 	
 	
@@ -203,116 +302,7 @@ public class CustomerService {
 	
 	
 	
-//	public ResponseStructure<List<Restaurant>> findByItemNameAndRestAddCity(int cid, String itemname) {
-//		ResponseStructure<List<Restaurant>> rs = new ResponseStructure<>();
-//		Customer cust = 
-//				customerRepo.findById(cid).orElseThrow(() -> new RestaurantNotFoundException());
-//		List<Address> custaddress = cust.getAddress();
-//		if (!custaddress.isEmpty()) {
-//			String city = custaddress.get(0).getCity();
-//			System.out.println("Customer City: " + city);
-//			List<Restaurant> restaurants =
-//					RestaurantRepo.findByAddressCityIgnoreCase(city);
-//			System.out.println("Restaurants Count: " + restaurants.size());
-//			System.out.println("Search Text: " + itemname);
-//			 List<Restaurant> result = restaurants.stream()
-//		                .filter(r ->
-//		                    // Restaurant name matches
-//		                    (r.getName() != null &&
-//		                     r.getName().toLowerCase()
-//		                      .contains(itemname.toLowerCase()))
 //
-//		                    ||
-//
-//		                    // Any item name matches
-//		                    (r.getMenu() != null &&
-//		                     r.getMenu().stream()
-//		                      .anyMatch(i ->
-//		                          i.getName() != null &&
-//		                          i.getName().toLowerCase()
-//		                           .contains(itemname.toLowerCase())))
-//		                )
-//		                .toList();
-//
-//			 	System.out.println("Result Count: " + result.size());
-//			rs.setStatuscode(HttpStatus.OK.value());
-//			rs.setMessage("Restaurants found");
-//			rs.setData(restaurants);
-//
-//		} else {
-//			rs.setStatuscode(HttpStatus.NOT_FOUND.value());
-//			rs.setMessage("Customer address not found");
-//			rs.setData(null);
-//		}
-//		return rs;
-//	}
-
-//	public ResponseStructure<List<Restaurant>> findByItemNameAndRestAddCity(int cid , String itemname) {
-//	    ResponseStructure<List<Restaurant>> rs = new ResponseStructure<>();
-//	    Customer cust = customerRepo.findById(cid).orElseThrow();
-//	    if(cust!=null) {
-//	    	throw new CustomerNotFoundException();
-//	    }
-//	    List<Address> custaddress = cust.getAddress();
-//	    if (custaddress.isEmpty()) {
-//	        rs.setStatuscode(HttpStatus.NOT_FOUND.value());
-//	        rs.setMessage("Customer address not found");
-//	        rs.setData(null);
-//	        return rs;
-//	    }
-//	    String city = custaddress.stream()
-//	            .map(Address::getCity)
-//	            .filter(c -> c != null && !c.isBlank())
-//	            .findFirst()
-//	            .orElse(null);
-//
-//	    if (city == null) {
-//	        rs.setStatuscode(HttpStatus.NOT_FOUND.value());
-//	        rs.setMessage("No valid city found");
-//	        rs.setData(null);
-//	        return rs;
-//	    }
-//	    System.out.println("Customer City = " + city);
-//	    List<Restaurant> restaurants =
-//	            RestaurantRepo.findByAddressCityIgnoreCase(city);
-//	    List<Restaurant> result = restaurants.stream().filter(r -> {
-//
-//	                // Search by Restaurant Name
-//	                boolean restaurantMatch =
-//	                        r.getName() != null &&
-//	                        r.getName().toLowerCase()
-//	                                .contains(itemname.toLowerCase());
-//
-//	                // Search by Item Name
-//	                boolean itemMatch =
-//	                        r.getMenu() != null &&
-//	                        r.getMenu().stream()
-//	                                .anyMatch(item ->
-//	                                        item.getName() != null &&
-//	                                        item.getName().toLowerCase()
-//	                                                .contains(itemname.toLowerCase()));
-//
-//	                // Return restaurant if either matches
-//	                return restaurantMatch || itemMatch;
-//	            })
-//	            .toList();
-//	    System.out.println("Restaurants found = " + result.size());
-//	    rs.setStatuscode(HttpStatus.OK.value());
-//	    rs.setMessage("Restaurants found");
-//	    rs.setData(result);
-//	    return rs;
-//	}
-//
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-	
 	
 	
 	
