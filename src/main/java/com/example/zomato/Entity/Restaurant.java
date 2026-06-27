@@ -144,4 +144,12 @@ public class Restaurant {
 		this.orders = orders;
 	}
 
+	@Override
+	public String toString() {
+		return "Restaurant [id=" + id + ", name=" + name + ", type=" + type + ", mobno=" + mobno + ", gmail=" + gmail
+				+ ", packagingfees=" + packagingfees + ", availability=" + availability + ", address=" + address
+				+ ", menu=" + menu + ", ratings=" + ratings + ", orders=" + orders + "]";
+	}
+
+	
 }

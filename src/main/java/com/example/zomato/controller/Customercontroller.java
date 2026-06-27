@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.zomato.DTO.CustomerDto;
+import com.example.zomato.DTO.GetCartDto;
 import com.example.zomato.DTO.ResponseStructure;
 import com.example.zomato.Entity.Coordinates;
 import com.example.zomato.Entity.Customer;
@@ -67,9 +68,13 @@ public class Customercontroller {
 	}
 	
 	@PostMapping("/customer/getcart/{cid}")
-	public void placetheorders(@PathVariable int cid) {
-		customerservice.placetheorder(cid);
+	public ResponseStructure<GetCartDto> getcart(@PathVariable int cid) {
+		 return customerservice.getcart(cid);
 	}
 	
+	@PostMapping("/customer/placeorder/{cid}")
+	public void placeorder(@RequestParam int cid) {
+		customerservice.placetheorder(cid);
+	}
 }
 

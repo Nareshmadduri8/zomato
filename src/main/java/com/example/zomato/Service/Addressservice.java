@@ -44,6 +44,7 @@ public class Addressservice {
 		a.setPincode(Integer.parseInt((String) address.get("postcode")));
 		a.setState((String) address.get("state"));
 		a.setStreet((String) address.get("road"));
+		a.setCoordinates(coordinates);
 		addressRepository.save(a);
 		c.getAddress().add(a);
 		customerRepository.save(c);

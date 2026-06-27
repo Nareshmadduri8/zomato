@@ -80,8 +80,8 @@ public class GlobalExceptionHandler {
 					return rs;
 				}
 				
-//				RestaurantNotAvailabilityforItemException
-				@ExceptionHandler(RestaurantNotAvailabilityforItemException.class)
+//				RestaurantNotMatchingException
+				@ExceptionHandler(RestaurantNotMatchingException.class)
 				public ResponseStructure<String> RestaurantNotAvailabilityforItemExceptionHandler() {
 					ResponseStructure<String> rs=new ResponseStructure<String>();
 					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
@@ -100,7 +100,15 @@ public class GlobalExceptionHandler {
 					return rs;
 				}
 				
-				
+//				If the cart is Empty throw the EmptyCartEcxeption
+				@ExceptionHandler(EmptyCartException.class)
+				public ResponseStructure<String> EmptyCartExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Add items to cart!");
+					rs.setData( null);
+					return rs;
+				}
 				
 				
 				

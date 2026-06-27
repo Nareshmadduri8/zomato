@@ -2,6 +2,7 @@ package com.example.zomato.Entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,8 +31,8 @@ public class Customer {
 	@OneToMany 
 	private List<Order> orders;
 	
-	@OneToMany
-	private List<Item> cart;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<CartItem> cart;
 	
 	
 	public Customer() {
@@ -39,7 +40,7 @@ public class Customer {
 	}
 
 	public Customer(String name, int age, String gender, long mobno, String gmail, double wallet,
-			List<Address> address, List<Order> orders, List<Item> cart) {
+			List<Address> address, List<Order> orders, List<CartItem> cart) {
 		this.name = name;
 		this.age = age;
 		this.gender = gender;
@@ -123,11 +124,11 @@ public class Customer {
 		this.orders = orders;
 	}
 
-	public List<Item> getCart() {
+	public List<CartItem> getCart() {
 		return cart;
 	}
 
-	public void setCart(List<Item> cart) {
+	public void setCart(List<CartItem> cart) {
 		this.cart = cart;
 	}
 
