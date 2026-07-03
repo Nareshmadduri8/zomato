@@ -2,6 +2,8 @@ package com.example.zomato.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,15 +37,21 @@ public class Restaurant {
 	@OneToMany
 	private List<Rating> ratings;
 
+	@JsonIgnore
 	@OneToMany
-	private List<Order> orders;
+	private List<Order> Activeorders;
+	
+	@JsonIgnore
+	@OneToMany
+	private List<Order> Completedorders;
+
 
 	public Restaurant() {
 		super();
 	}
 
 	public Restaurant(String name, String type, long mobno, String gmail, double packagingfees, String availability,
-			Address address, List<Item> menu, List<Rating> ratings, List<Order> orders) {
+			Address address, List<Item> menu, List<Rating> ratings, List<Order> Activeorders,List<Order> Compeletedorders) {
 		this.name = name;
 		this.type = type;
 		this.mobno = mobno;
@@ -53,7 +61,8 @@ public class Restaurant {
 		this.address = address;
 		this.menu = menu;
 		this.ratings = ratings;
-		this.orders = orders;
+		this.Activeorders = Activeorders;
+		this.Completedorders=Compeletedorders;
 	}
 
 	public int getId() {
@@ -136,20 +145,30 @@ public class Restaurant {
 		this.ratings = ratings;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public List<Order> getActiveorders() {
+		return Activeorders;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setActiveorders(List<Order> activeorders) {
+		Activeorders = activeorders;
+	}
+
+	public List<Order> getCompletedorders() {
+		return Completedorders;
+	}
+
+	public void setCompletedorders(List<Order> completedorders) {
+		Completedorders = completedorders;
 	}
 
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", name=" + name + ", type=" + type + ", mobno=" + mobno + ", gmail=" + gmail
 				+ ", packagingfees=" + packagingfees + ", availability=" + availability + ", address=" + address
-				+ ", menu=" + menu + ", ratings=" + ratings + ", orders=" + orders + "]";
+				+ ", menu=" + menu + ", ratings=" + ratings + ", Activeorders=" + Activeorders + ", Completedorders="
+				+ Completedorders + "]";
 	}
 
+	
 	
 }

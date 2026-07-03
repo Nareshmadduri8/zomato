@@ -1,7 +1,5 @@
 package com.example.zomato.DTO;
 
-import jakarta.persistence.Column;
-
 public class CustomerDto {
 
 	private String name;

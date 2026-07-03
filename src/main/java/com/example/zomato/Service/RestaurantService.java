@@ -1,5 +1,7 @@
 package com.example.zomato.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ import com.example.zomato.DTO.RestaurantDto;
 import com.example.zomato.Entity.Address;
 import com.example.zomato.Entity.Coordinates;
 import com.example.zomato.Entity.Item;
+import com.example.zomato.Entity.Order;
 import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Exception.RestaurantNotFoundException;
 import com.example.zomato.Repository.ItemRepository;
@@ -30,16 +33,17 @@ public class RestaurantService {
 	private RestTemplate restTemplate;
 	
 
-	public ResponseStructure<Restaurant> saverestaurant(RestaurantDto rdto) {
+	public ResponseStructure<Restaurant> saverestaurant(RestaurantDto restaurantDto) {
 		ResponseStructure<Restaurant> rs=new ResponseStructure<Restaurant>();
-		Restaurant r=new Restaurant();
-		r.setName(rdto.getName());
-		r.setType(rdto.getType());
-		r.setMobno(rdto.getMobno());
-		r.setGmail(rdto.getGmail());
-		r.setAvailability("closed");
+		Restaurant restaurant=new Restaurant();
+		restaurant.setName(restaurantDto.getName());
+		restaurant.setType(restaurantDto.getType());
+		restaurant.setMobno(restaurantDto.getMobno());
+		restaurant.setGmail(restaurantDto.getGmail());
+		restaurant.setAvailability("open");
 		String url = "https://us1.locationiq.com/v1/reverse?key=pk.3cdc3a5a72f82bb33771f7551a92c22a&lat="
-				+ rdto.getLatitude() + "&lon=" + rdto.getLongitude() + "&format=json&";
+				+ restaurantDto.getLatitude() + "&lon=" + restaurantDto.getLongitude() + "&format=json&";
+		
 		Map<String, Object> response = (Map<String, Object>) restTemplate.getForObject(url, Object.class);
 		Map<String, Object> address = (Map<String, Object>) response.get("address");
 		System.out.println(address);
@@ -50,15 +54,16 @@ public class RestaurantService {
 		restaddress.setPincode(Integer.parseInt((String) address.get("postcode")));
 		restaddress.setState((String) address.get("state"));
 		restaddress.setStreet((String) address.get("road"));
-		r.setAddress(restaddress);
+		restaurant.setAddress(restaddress);
+		
 		Coordinates coordinates=new Coordinates();
-		coordinates.setLatitude(rdto.getLatitude());
-		coordinates.setLongitude(rdto.getLongitude());
+		coordinates.setLatitude(restaurantDto.getLatitude());
+		coordinates.setLongitude(restaurantDto.getLongitude());
 		restaddress.setCoordinates(coordinates);
-		restaurantRepository.save(r);
+		restaurantRepository.save(restaurant);
 		rs.setStatuscode(HttpStatus.CREATED.value());
 		rs.setMessage("RESTAURANT SAVED");
-		rs.setData(r);
+		rs.setData(restaurant);
 		return rs;
 	}
 	
@@ -80,7 +85,7 @@ public class RestaurantService {
 //	}
 	
 	public ResponseStructure<Restaurant> findrestaurant(int id) {
-		Restaurant rest= restaurantRepository.findById(id).orElseThrow(()-> new RestaurantNotFoundException());
+		Restaurant restaurant= restaurantRepository.findById(id).orElseThrow(()-> new RestaurantNotFoundException());
 		ResponseStructure<Restaurant> rs=new ResponseStructure<Restaurant>();
 		Restaurant r=new Restaurant();
 		rs.setStatuscode(HttpStatus.FOUND.value());
@@ -90,7 +95,7 @@ public class RestaurantService {
 	}
 
 	public ResponseStructure<Restaurant> deleterestaurant(int id) {
-		Restaurant rest=restaurantRepository.findById(id).orElseThrow(()-> new RestaurantNotFoundException());
+		Restaurant restaurant=restaurantRepository.findById(id).orElseThrow(()-> new RestaurantNotFoundException());
 		ResponseStructure<Restaurant> rs=new ResponseStructure<Restaurant>();
 		Restaurant r=new Restaurant();
 			restaurantRepository.deleteById(id);
@@ -99,6 +104,28 @@ public class RestaurantService {
 			rs.setData(null);
 		return rs;
 	}
+
+	public ResponseStructure<List<Order>> getplacedorder(int restaurantid) {
+		ResponseStructure<List<Order>> rs=new ResponseStructure<List<Order>>();
+		Restaurant restaurant= restaurantRepository.findById(restaurantid).orElseThrow(()-> new RestaurantNotFoundException());
+		List<Order> currentrestaurantorder=restaurant.getActiveorders();
+		List<Order> placedorder=new ArrayList<>();
+		for (Order orders : currentrestaurantorder) {
+			if(orders.getStatus().contains("Placed")) {
+				placedorder.add(orders);
+			}
+		}
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("This are the orders");
+		rs.setData(placedorder);
+		return rs;
+	}
+
+	public void acceptorder(int restid, int orderid) {
+		
+		
+	}
+	
 
 	
 	

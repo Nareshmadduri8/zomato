@@ -2,10 +2,12 @@ package com.example.zomato.Entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -24,17 +26,17 @@ public class Order {
 	private String time;
 	private double deliverycharges;
 	
-	@OneToOne
-	private Customer c;
+	@ManyToOne
+	private Customer customer;
 	
 	@OneToOne
-	private Restaurant r;
+	private Restaurant restaurant;
 	
 	@OneToOne
-	private DeliveryPartner dp;
+	private DeliveryPartner deliveryPartner;
 	
-	@OneToMany
-	private List<Item> items;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<CartItem> items;
 	
 	@OneToOne
 	private Address pickupaddress;
@@ -47,7 +49,7 @@ public class Order {
 	}
 
 	public Order(double totalamount, String comment, String status, String date, String time,
-			double deliverycharges, Customer c, Restaurant r, DeliveryPartner dp, List<Item> items,
+			double deliverycharges, Customer customer, Restaurant restaurant, DeliveryPartner deliveryPartner, List<CartItem> items,
 			Address pickupaddress, Address deliveryorderaddress) {
 		this.totalamount = totalamount;
 		this.comment = comment;
@@ -55,9 +57,9 @@ public class Order {
 		this.date = date;
 		this.time = time;
 		this.deliverycharges = deliverycharges;
-		this.c = c;
-		this.r = r;
-		this.dp = dp;
+		this.customer = customer;
+		this.restaurant = restaurant;
+		this.deliveryPartner = deliveryPartner;
 		this.items = items;
 		this.pickupaddress = pickupaddress;
 		this.deliveryorderaddress = deliveryorderaddress;
@@ -119,35 +121,35 @@ public class Order {
 		this.deliverycharges = deliverycharges;
 	}
 
-	public Customer getC() {
-		return c;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setC(Customer c) {
-		this.c = c;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public Restaurant getR() {
-		return r;
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 
-	public void setR(Restaurant r) {
-		this.r = r;
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
-	public DeliveryPartner getDp() {
-		return dp;
+	public DeliveryPartner getDeliveryPartner() {
+		return deliveryPartner;
 	}
 
-	public void setDp(DeliveryPartner dp) {
-		this.dp = dp;
+	public void setDeliveryPartner(DeliveryPartner deliveryPartner) {
+		this.deliveryPartner = deliveryPartner;
 	}
 
-	public List<Item> getItems() {
+	public List<CartItem> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<CartItem> items) {
 		this.items = items;
 	}
 

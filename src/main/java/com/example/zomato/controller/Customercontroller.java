@@ -3,6 +3,7 @@ package com.example.zomato.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.zomato.DTO.CustomerDto;
 import com.example.zomato.DTO.GetCartDto;
+import com.example.zomato.DTO.PlaceOrderDto;
 import com.example.zomato.DTO.ResponseStructure;
 import com.example.zomato.Entity.Coordinates;
 import com.example.zomato.Entity.Customer;
 import com.example.zomato.Entity.Item;
+import com.example.zomato.Entity.Order;
 import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Service.Addressservice;
 import com.example.zomato.Service.CustomerService;
@@ -29,6 +32,17 @@ public class Customercontroller {
 	
 	@Autowired
 	private Addressservice addressservice;
+	
+	@Autowired
+    private StringRedisTemplate redisTemplate;
+	
+	
+
+    @GetMapping("/redis")
+    public String testRedis() {
+        redisTemplate.opsForValue().set("name", "Naresh");
+        return redisTemplate.opsForValue().get("name");
+    }
 	
 	@PostMapping("/customer/createaccount")
 	public ResponseStructure<Customer> savecustomerdto(@RequestBody CustomerDto cdto) {
@@ -67,14 +81,16 @@ public class Customercontroller {
 		return customerservice.additemtocart(cid,itemid);
 	}
 	
-	@PostMapping("/customer/getcart/{cid}")
+	@GetMapping("/customer/getcart/{cid}")
 	public ResponseStructure<GetCartDto> getcart(@PathVariable int cid) {
 		 return customerservice.getcart(cid);
 	}
 	
-	@PostMapping("/customer/placeorder/{cid}")
-	public void placeorder(@RequestParam int cid) {
-		customerservice.placetheorder(cid);
+	@PostMapping("/customer/placeorder")
+	public ResponseStructure<Order> placeorder(@RequestParam int cid ,@RequestParam int customeraddressid) {
+		return customerservice.placetheorder(cid,customeraddressid);
 	}
+	
+	
 }
 

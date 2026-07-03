@@ -2,6 +2,8 @@ package com.example.zomato.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,12 +26,19 @@ public class Customer {
 	@Column(unique = true)
 	private String gmail;
 	private double wallet;
+	private double totalcartvalue;
+	private double currentcartdeliverycharges;
 	
 	@OneToMany
 	private List<Address> address;
 	
+	@JsonIgnore
 	@OneToMany 
-	private List<Order> orders;
+	private List<Order> Activeorders;
+	
+	@JsonIgnore
+	@OneToMany 
+	private List<Order> Completedorders;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CartItem> cart;
@@ -39,18 +48,26 @@ public class Customer {
 		super();
 	}
 
-	public Customer(String name, int age, String gender, long mobno, String gmail, double wallet,
-			List<Address> address, List<Order> orders, List<CartItem> cart) {
+	public Customer(int id, String name, int age, String gender, long mobno, String gmail, double wallet,
+			double totalcartvalue, double currentcartdeliverycharges, List<Address> address, List<Order> activeorders,
+			List<Order> completedorders, List<CartItem> cart) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.gender = gender;
 		this.mobno = mobno;
 		this.gmail = gmail;
 		this.wallet = wallet;
+		this.totalcartvalue = totalcartvalue;
+		this.currentcartdeliverycharges = currentcartdeliverycharges;
 		this.address = address;
-		this.orders = orders;
+		Activeorders = activeorders;
+		Completedorders = completedorders;
 		this.cart = cart;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -116,12 +133,20 @@ public class Customer {
 		this.address = address;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public List<Order> getActiveorders() {
+		return Activeorders;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setActiveorders(List<Order> activeorders) {
+		Activeorders = activeorders;
+	}
+
+	public List<Order> getCompletedorders() {
+		return Completedorders;
+	}
+
+	public void setCompletedorders(List<Order> completedorders) {
+		Completedorders = completedorders;
 	}
 
 	public List<CartItem> getCart() {
@@ -131,13 +156,30 @@ public class Customer {
 	public void setCart(List<CartItem> cart) {
 		this.cart = cart;
 	}
-
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", mobno=" + mobno
-				+ ", gmail=" + gmail + ", wallet=" + wallet + ", address=" + address + ", orders=" + orders + ", cart="
-				+ cart + "]";
+	
+	public double getTotalcartvalue() {
+		return totalcartvalue;
 	}
+
+	public void setTotalcartvalue(double totalcartvalue) {
+		this.totalcartvalue = totalcartvalue;
+	}
+
+	public double getCurrentcartdeliverycharges() {
+		return currentcartdeliverycharges;
+	}
+
+	public void setCurrentcartdeliverycharges(double currentcartdeliverycharges) {
+		this.currentcartdeliverycharges = currentcartdeliverycharges;
+	}
+
+//	@Override
+//	public String toString() {
+//		return "Customer [id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", mobno=" + mobno
+//				+ ", gmail=" + gmail + ", wallet=" + wallet + ", address=" + address + ", Activeorders=" + Activeorders
+//				+ ", Completedorders=" + Completedorders + ", cart=" + cart + "]";
+//	}
+
 	
 	
 	

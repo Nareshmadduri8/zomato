@@ -9,30 +9,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.zomato.DTO.DeliveryPartnerDto;
+import com.example.zomato.DTO.LocationDto;
 import com.example.zomato.DTO.ResponseStructure;
 import com.example.zomato.Entity.DeliveryPartner;
+import com.example.zomato.Service.DeliveryPartnerLocationService;
 import com.example.zomato.Service.DeliveryPartnerService;
 
 @RestController
 public class DeliveryPartnerController {
 
+	
 	@Autowired
-	private DeliveryPartnerService dPService;
+	private DeliveryPartnerService deliverypartnerservice;
+	
+	@Autowired
+	private DeliveryPartnerLocationService deliveryPartnerLocationService;
 	
 	@PostMapping("/deliverypartner/savedp")
 	public void savedeliverypartner(@RequestBody DeliveryPartnerDto dpdto) {
-		dPService.savedeliverypartner(dpdto);
+		deliverypartnerservice.savedeliverypartner(dpdto);
 	}
 	
 	@GetMapping("/deliverypartner/finddp")
 	public ResponseStructure<DeliveryPartner> finddeliverypartner(@RequestParam int id) {
-		 return dPService.finddeliverypartner(id);
+		 return deliverypartnerservice.finddeliverypartner(id);
 	}
 	
 	
 	@DeleteMapping("/deliverypartner/deletedp")
 	public ResponseStructure<DeliveryPartner> deletedeliverypartner(@RequestParam int id) {
-		return dPService.deletedeliverypartner(id);
+		return deliverypartnerservice.deletedeliverypartner(id);
+	}
+	
+	@PostMapping("/sendCurrentCoordinates")
+	public String sendCurrentCoordinates(@RequestBody LocationDto locationdto){
+		deliveryPartnerLocationService.updateLocation(locationdto);
+	    return "Location Updated successfully";
 	}
 }
 

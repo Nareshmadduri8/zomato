@@ -1,5 +1,7 @@
 package com.example.zomato.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.zomato.DTO.ItemDto;
 import com.example.zomato.DTO.ResponseStructure;
 import com.example.zomato.DTO.RestaurantDto;
+import com.example.zomato.Entity.Order;
 import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Service.ItemService;
 import com.example.zomato.Service.RestaurantService;
@@ -39,8 +42,15 @@ public class RestaurantController {
 		return restaurantService.deleterestaurant(id);
 	}
 	
+	@GetMapping("/restaurant/getplacedorder")
+	public ResponseStructure<List<Order>> getplacedorder(@RequestParam int restaurantid) {
+		return restaurantService.getplacedorder(restaurantid);
+	}
 	
-	
+	@PostMapping("/restaurant/acceptorder")
+	public void restaurantAcceptorder(@RequestParam int restid, @RequestParam int orderid) {
+		restaurantService.acceptorder(restid,orderid);
+	}
 	
 
 	

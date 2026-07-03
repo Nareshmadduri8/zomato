@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
 				public ResponseStructure<String> RestaurantNotAvailabilityforItemExceptionHandler() {
 					ResponseStructure<String> rs=new ResponseStructure<String>();
 					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
-					rs.setMessage("Restaurant Not Availability for Item!");
+					rs.setMessage("Restaurant Not Matching with that item!");
 					rs.setData( null);
 					return rs;
 				}
@@ -106,6 +106,16 @@ public class GlobalExceptionHandler {
 					ResponseStructure<String> rs=new ResponseStructure<String>();
 					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
 					rs.setMessage("Add items to cart!");
+					rs.setData( null);
+					return rs;
+				}
+				
+//				Restaurant Not Available At Moment Exception
+				@ExceptionHandler(RestaurantNotAvailableAtMomentException.class)
+				public ResponseStructure<String> RestaurantNotAvailableAtMomentExceptionHandler() {
+					ResponseStructure<String> rs=new ResponseStructure<String>();
+					rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+					rs.setMessage("Restaurant Not Available At Moment Exception!");
 					rs.setData( null);
 					return rs;
 				}

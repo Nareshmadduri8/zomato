@@ -6,15 +6,15 @@ public class RestaurantDto {
 	private String type;
 	private long mobno;
 	private String gmail;
-	private String latitude;
-	private String longitude;
+	private double latitude;
+	private double longitude;
 	
 	
 	public RestaurantDto() {
 		super();
 	}
 
-	public RestaurantDto(String name, String type, long mobno, String gmail, String latitude, String longitude) {
+	public RestaurantDto(String name, String type, long mobno, String gmail, double latitude, double longitude) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -23,7 +23,6 @@ public class RestaurantDto {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-
 
 
 	public String getName() {
@@ -57,20 +56,20 @@ public class RestaurantDto {
 	public void setGmail(String gmail) {
 		this.gmail = gmail;
 	}
-	
-	public String getLatitude() {
+
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
