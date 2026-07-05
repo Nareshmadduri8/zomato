@@ -1,15 +1,24 @@
 package com.example.zomato.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.redis.connection.RedisGeoCommands;
+import org.springframework.data.redis.core.GeoOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
+//import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.data.geo.Point;
 
 import com.example.zomato.DTO.ItemDto;
 import com.example.zomato.DTO.ResponseStructure;
@@ -19,9 +28,13 @@ import com.example.zomato.Entity.Coordinates;
 import com.example.zomato.Entity.Item;
 import com.example.zomato.Entity.Order;
 import com.example.zomato.Entity.Restaurant;
+import com.example.zomato.Exception.OrderNotFoundException;
 import com.example.zomato.Exception.RestaurantNotFoundException;
 import com.example.zomato.Repository.ItemRepository;
+import com.example.zomato.Repository.OrderRepository;
 import com.example.zomato.Repository.RestaurantRepository;
+
+
 
 @Service
 public class RestaurantService {
@@ -31,6 +44,12 @@ public class RestaurantService {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private StringRedisTemplate redisTemplate;
+	
+	@Autowired
+	private OrderRepository orderRepository;
 	
 
 	public ResponseStructure<Restaurant> saverestaurant(RestaurantDto restaurantDto) {
@@ -121,17 +140,66 @@ public class RestaurantService {
 		return rs;
 	}
 
-	public void acceptorder(int restid, int orderid) {
-		
+	
+
+	private static final String GEO_KEY ="deliverypartner-locations";
+		public List<Long> acceptOrder(int orderid) {
+			Order order = orderRepository.findById(orderid)
+		            .orElseThrow(() -> new OrderNotFoundException());
+		    Restaurant restaurant = order.getRestaurant();
+
+		    // Check whether order is in PLACED status
+		    if (order.getStatus().contains("PLACED")) {
+		        throw new RuntimeException( "Order is already accepted" );
+		    }
+		  
+		    // Accept the order
+		    order.setStatus("ORDER ACCEPTED");
+
+		    // Save order
+		    orderRepository.save(order);
+
+		    // Get restaurant coordinates from database
+		    Coordinates coordinates = restaurant
+		            .getAddress()
+		            .getCoordinates();
+
+		    // Redis GEO operations
+		    GeoOperations<String, String> geoOperations =
+		            redisTemplate.opsForGeo();
+
+		    // Search delivery partners within given range
+		    GeoResults<RedisGeoCommands.GeoLocation<String>> results =
+		            geoOperations.radius(
+		                    GEO_KEY,
+		                    new Circle(
+		                          new Point(coordinates.getLongitude(),
+		                                    coordinates.getLatitude()
+		                            ),
+		                            new Distance(50, Metrics.KILOMETERS)
+		                    )
+		            );
+
+		    // If no delivery partners found
+
+		    if (results == null || results.getContent().isEmpty()) {
+		        System.out.println("No nearby delivery partners found.");
+		        return Collections.emptyList();
+		    }
+		    // Convert Redis results into partner IDs
+		    List<Long> availableDps = results
+		            .getContent()
+		            .stream()
+		            .map(result ->
+		                    Long.parseLong(
+		                            result
+		                                    .getContent()
+		                                    .getName()
+		                    )
+		            )
+		            .toList();
+		    return availableDps;
+		}
 		
 	}
 	
-
-	
-	
-	
-	
-	
-	
-	
-}

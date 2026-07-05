@@ -26,5 +26,4 @@ public class DeliveryPartnerLocationService {
                 String.valueOf(locationdto.getDeliveryPartnerId())
         );
 		}
-	
 }

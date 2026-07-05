@@ -48,8 +48,8 @@ public class RestaurantController {
 	}
 	
 	@PostMapping("/restaurant/acceptorder")
-	public void restaurantAcceptorder(@RequestParam int restid, @RequestParam int orderid) {
-		restaurantService.acceptorder(restid,orderid);
+	public List<Long> restaurantAcceptorder(@RequestParam int orderid) {
+		return restaurantService.acceptOrder(orderid);
 	}
 	
 

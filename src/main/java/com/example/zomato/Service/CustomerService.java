@@ -248,8 +248,8 @@ public class CustomerService {
 		double estimatedTime = ((Number) route.get("duration")).doubleValue() / 60.0;
 		double distance = ((Number) route.get("distance")).doubleValue() / 1000.0;
 		double deliveryCharges = 0;
-		if (distance > 2) {
-			deliveryCharges = (distance - 2) * 10;
+		if (distance > 5) {
+			deliveryCharges = (distance - 5) * 10;
 		}
 		double totaltopay = totalItemPrice + deliveryCharges + packagingfee;
 		getCartDto.setRestaurant(restaurant);
@@ -294,7 +294,7 @@ public class CustomerService {
 		order.setCustomer(customer);
 		order.setRestaurant(restaurant);
 		order.setItems(cartitem);
-		order.setComment(null);
+		order.setComment("Come fast");
 		order.setStatus("Placed");
 		order.setPickupaddress(restaurant.getAddress());
 		
@@ -338,7 +338,6 @@ public class CustomerService {
 		
 		
 		
-	
 	
 	
 	
