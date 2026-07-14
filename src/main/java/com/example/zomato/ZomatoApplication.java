@@ -27,9 +27,9 @@ public class ZomatoApplication {
 	    redistemplate.setConnectionFactory(connectionFactory);
 	    redistemplate.setKeySerializer(new StringRedisSerializer());
 	    redistemplate.setValueSerializer(new StringRedisSerializer());
-//	    redistemplate.setHashKeySerializer(new StringRedisSerializer());
-//	    redistemplate.setHashValueSerializer(new StringRedisSerializer());
-//	    redistemplate.afterPropertiesSet();
+	    redistemplate.setHashKeySerializer(new StringRedisSerializer());
+	    redistemplate.setHashValueSerializer(new StringRedisSerializer());
+	    redistemplate.afterPropertiesSet();
 	    return redistemplate;
 	}
 

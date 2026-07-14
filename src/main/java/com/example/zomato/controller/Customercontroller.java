@@ -24,6 +24,8 @@ import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Service.Addressservice;
 import com.example.zomato.Service.CustomerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class Customercontroller {
 
@@ -45,7 +47,7 @@ public class Customercontroller {
     }
 	
 	@PostMapping("/customer/createaccount")
-	public ResponseStructure<Customer> savecustomerdto(@RequestBody CustomerDto cdto) {
+	public ResponseStructure<Customer> savecustomerdto(@Valid @RequestBody CustomerDto cdto) {
 		return customerservice.createaccount(cdto);
 	}
 	

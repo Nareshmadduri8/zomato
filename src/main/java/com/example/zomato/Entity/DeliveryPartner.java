@@ -20,7 +20,7 @@ public class DeliveryPartner {
 	private long mobno;
 	@Column(unique = true)
 	private String gmail;
-	private int vehicleNo;
+	private String vehicleNo;
 	private String status;
 
 	@OneToMany
@@ -30,7 +30,7 @@ public class DeliveryPartner {
 		super();
 	}
 
-	public DeliveryPartner(String name, long mobno, String gmail, int vehicleNo, String status, List<Order> orders) {
+	public DeliveryPartner(String name, long mobno, String gmail, String vehicleNo, String status, List<Order> orders) {
 		this.name = name;
 		this.mobno = mobno;
 		this.gmail = gmail;
@@ -71,11 +71,11 @@ public class DeliveryPartner {
 		this.gmail = gmail;
 	}
 
-	public int getVehicleNo() {
+	public String getVehicleNo() {
 		return vehicleNo;
 	}
 
-	public void setVehicleNo(int vehicleNo) {
+	public void setVehicleNo(String vehicleNo) {
 		this.vehicleNo = vehicleNo;
 	}
 

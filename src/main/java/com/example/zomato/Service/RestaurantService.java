@@ -13,10 +13,10 @@ import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-//import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.data.geo.Point;
 
@@ -33,6 +33,8 @@ import com.example.zomato.Exception.RestaurantNotFoundException;
 import com.example.zomato.Repository.ItemRepository;
 import com.example.zomato.Repository.OrderRepository;
 import com.example.zomato.Repository.RestaurantRepository;
+
+import tools.jackson.databind.ObjectMapper;
 
 
 
@@ -142,7 +144,7 @@ public class RestaurantService {
 
 	
 
-	private static final String GEO_KEY ="deliverypartner-locations";
+	
 		public List<Long> acceptOrder(int orderid) {
 			Order order = orderRepository.findById(orderid)
 		            .orElseThrow(() -> new OrderNotFoundException());
@@ -153,17 +155,16 @@ public class RestaurantService {
 		        throw new RuntimeException( "Order is already accepted" );
 		    }
 		  
-		    // Accept the order
-		    order.setStatus("ORDER ACCEPTED");
-
-		    // Save order
-		    orderRepository.save(order);
 
 		    // Get restaurant coordinates from database
 		    Coordinates coordinates = restaurant
 		            .getAddress()
 		            .getCoordinates();
 
+		    
+		        // GEO key containing all delivery partner locations
+		     String GEO_KEY ="deliverypartner-locations";
+		     
 		    // Redis GEO operations
 		    GeoOperations<String, String> geoOperations =
 		            redisTemplate.opsForGeo();
@@ -192,14 +193,30 @@ public class RestaurantService {
 		            .stream()
 		            .map(result ->
 		                    Long.parseLong(
-		                            result
-		                                    .getContent()
-		                                    .getName()
+		                            result.getContent().getName()
 		                    )
 		            )
 		            .toList();
+		    
+		    // Push order into every nearby DP's existing HASH
+		    for (Long dpId : availableDps) {
+
+		        String dpKey = "deliveryPartner:" + dpId;
+
+		        redisTemplate.opsForHash().put(
+		                dpKey,
+		                "order:" + orderid,
+		                String.valueOf(orderid)
+		        );
+		    }
+
+		 // Update order status only after pushing to DPs
+		    order.setStatus("ORDER ACCEPTED");
+		    orderRepository.save(order);
+
 		    return availableDps;
 		}
 		
 	}
 	
+

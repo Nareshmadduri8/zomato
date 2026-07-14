@@ -3,6 +3,7 @@ package com.example.zomato.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,8 @@ import com.example.zomato.Entity.Restaurant;
 import com.example.zomato.Service.ItemService;
 import com.example.zomato.Service.RestaurantService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class RestaurantController {
 
@@ -26,18 +29,18 @@ public class RestaurantController {
 	private RestaurantService restaurantService;
 	
 	
-	@PostMapping("/rest/createrestaurant")
-	public ResponseStructure<Restaurant> saverestaurantdto(@RequestBody RestaurantDto rdto) {
+	@PostMapping("/restaurant/createrestaurant")
+	public ResponseStructure<Restaurant> saverestaurantdto(@Valid @RequestBody RestaurantDto rdto) {
 		return restaurantService.saverestaurant(rdto);
 	}
 	
 	
-	@GetMapping("/rest/findrestaurant")
+	@GetMapping("/restaurant/findrestaurant")
 	public ResponseStructure<Restaurant> findrestaurant(@RequestParam int id) {
 		return restaurantService.findrestaurant(id);
 	}
 	
-	@DeleteMapping("/rest/deleterestaurant")
+	@DeleteMapping("/restaurant/deleterestaurant")
 	public ResponseStructure<Restaurant> deleterestaurant(@RequestParam int id) {
 		return restaurantService.deleterestaurant(id);
 	}
@@ -51,6 +54,10 @@ public class RestaurantController {
 	public List<Long> restaurantAcceptorder(@RequestParam int orderid) {
 		return restaurantService.acceptOrder(orderid);
 	}
+	
+	
+	
+
 	
 
 	
