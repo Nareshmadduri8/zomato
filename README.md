@@ -49,17 +49,17 @@ Efficient delivery partner search with minimal latency
 
 This project demonstrates practical implementation of:
 
-REST API Development
-Spring Boot Best Practices
-Spring Data JPA
-PostgreSQL Integration
-Redis GeoSpatial Operations
-Docker Containerization
-DTO Mapping
-Exception Handling
-Input Validation
-Layered Software Architecture
-Real-Time Backend System Design
+REST API Development |
+Spring Boot Best Practices |
+Spring Data JPA |
+PostgreSQL Integration |
+Redis GeoSpatial Operations |
+Docker Containerization |
+DTO Mapping |
+Exception Handling |
+Input Validation |
+Layered Software Architecture |
+Real-Time Backend System Design |
 
 
 📖 Project Goal
