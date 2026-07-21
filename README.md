@@ -21,19 +21,9 @@ Order status tracking from placement to delivery
 Exception handling and request validation
 Scalable layered architecture (Controller → Service → Repository)
 
-🛠️ Tech Stack
-Backend: Spring Boot
-Language: Java
-Database: PostgreSQL
-Caching & GeoSpatial: Redis Stack
-ORM: Spring Data JPA (Hibernate)
-Build Tool: Maven
-API Testing: Postman
-Containerization: Docker
-
+🛠️ Tech Stack : Spring Boot | Java | PostgreSQL | Redis Stack | Spring Data JPA (Hibernate) | Maven | Postman | Docker
 
 🏗️ Architecture
-
 The project follows a layered architecture:
 
 Controller Layer – Exposes REST APIs
