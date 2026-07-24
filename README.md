@@ -10,18 +10,18 @@ It leverages Spring Boot, PostgreSQL, Redis, and Docker to build a high-performa
 
 🚀 Key Features
 
-Customer registration and profile management
-Restaurant onboarding and menu management
-Shopping cart with single-restaurant validation
-Order placement and order lifecycle management
-Real-time delivery partner assignment using Redis GeoSpatial indexing
-Live delivery partner location tracking
-Role-based REST APIs for Customers, Restaurants, and Delivery Partners
-Distance-based delivery charge calculation
-Packaging fee calculation
-Restaurant availability management
-Order status tracking from placement to delivery
-Exception handling and request validation
+Customer registration and profile management.
+Restaurant onboarding and menu management.
+Shopping cart with single-restaurant validation.
+Order placement and order lifecycle management.
+Real-time delivery partner assignment using Redis GeoSpatial indexing.
+Live delivery partner location tracking.
+Role-based REST APIs for Customers, Restaurants, and Delivery Partners.
+Distance-based delivery charge calculation.
+Packaging fee calculation.
+Restaurant availability management.
+Order status tracking from placement to delivery.
+Exception handling and request validation.
 Scalable layered architecture (Controller → Service → Repository)
 
 🛠️ Tech Stack : Spring Boot | Java | PostgreSQL | Redis Stack | Spring Data JPA (Hibernate) | Maven | Postman | Docker
