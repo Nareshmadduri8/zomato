@@ -9,6 +9,7 @@ The system is designed using a layered architecture following industry best prac
 It leverages Spring Boot, PostgreSQL, Redis, and Docker to build a high-performance backend capable of handling real-time order processing and delivery workflows.
 
 🚀 Key Features
+
 Customer registration and profile management
 Restaurant onboarding and menu management
 Shopping cart with single-restaurant validation
